@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 import test from "node:test";
+import { runInNewContext } from "node:vm";
 
 const root = new URL("../", import.meta.url);
 
@@ -27,8 +28,10 @@ test("defines the academic portfolio with the complete verified publication list
   assert.match(page, /\/logo_light\.png/);
   assert.match(page, /\/logo_dark\.png/);
   assert.match(page, /<ThemeToggle \/>/);
-  assert.match(themeToggle, /Switch to \$\{nextTheme\} mode/);
-  assert.match(themeToggle, /window\.localStorage\.setItem/);
+  assert.match(themeToggle, /data-theme-toggle/);
+  assert.doesNotMatch(themeToggle, /use client|useEffect|useState|onClick/);
+  assert.match(layout, /document\.addEventListener\("click"/);
+  assert.match(layout, /localStorage\.setItem\(storageKey, nextTheme\)/);
   assert.match(styles, /html\[data-theme="dark"\] \.academic-site/);
   assert.match(page, /MSc student at Mohamed bin Zayed University/);
   assert.match(page, /Reinforce Trustworthiness in Multimodal Emotional Support System/);
@@ -86,6 +89,64 @@ test("publishes a clear Cloudflare analytics privacy boundary", async () => {
   assert.match(html, /does not collect or use visitors/);
   assert.doesNotMatch(html, /property="og:image"/);
   assert.doesNotMatch(html, /name="twitter:image"/);
+});
+
+test("exports a hydration-independent light and dark mode control", async () => {
+  const homeHtml = await readFile(new URL("dist/client/index.html", root), "utf8");
+
+  assert.match(homeHtml, /data-theme-toggle="true"/);
+  assert.match(homeHtml, /document\.addEventListener\("click"/);
+  assert.match(homeHtml, /localStorage\.setItem\(storageKey, nextTheme\)/);
+  assert.doesNotMatch(homeHtml, /ThemeToggle-[^"]+\.js/);
+
+  const themeScript = [...homeHtml.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)]
+    .map((match) => match[1])
+    .find((script) => script.includes('const storageKey = "academic-theme"'));
+  assert.ok(themeScript);
+
+  const listeners = new Map();
+  const storedValues = new Map();
+  const attributes = new Map();
+  const icon = { textContent: "" };
+  const label = { textContent: "" };
+
+  class FakeElement {}
+  const button = new FakeElement();
+  button.setAttribute = (name, value) => attributes.set(name, value);
+  button.querySelector = (selector) =>
+    selector === "[data-theme-toggle-icon]" ? icon : label;
+
+  const documentElement = { dataset: {}, style: {} };
+  const document = {
+    documentElement,
+    querySelector: () => button,
+    addEventListener: (type, listener) => listeners.set(type, listener),
+  };
+  const localStorage = {
+    getItem: (key) => storedValues.get(key) ?? null,
+    setItem: (key, value) => storedValues.set(key, value),
+  };
+
+  runInNewContext(themeScript, {
+    document,
+    localStorage,
+    matchMedia: () => ({ matches: false }),
+    Element: FakeElement,
+  });
+
+  assert.equal(documentElement.dataset.theme, "light");
+  assert.equal(label.textContent, "Light");
+
+  const clickTarget = new FakeElement();
+  clickTarget.closest = () => button;
+  listeners.get("click")({ target: clickTarget });
+
+  assert.equal(documentElement.dataset.theme, "dark");
+  assert.equal(documentElement.style.colorScheme, "dark");
+  assert.equal(storedValues.get("academic-theme"), "dark");
+  assert.equal(icon.textContent, "☾");
+  assert.equal(label.textContent, "Dark");
+  assert.equal(attributes.get("aria-label"), "Switch to light mode");
 });
 
 test("exports every public route and all final imagery for GitHub Pages", async () => {

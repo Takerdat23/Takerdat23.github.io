@@ -12,14 +12,51 @@ const analyticsToken =
 
 const themeScript = `
   (() => {
-    try {
-      const stored = localStorage.getItem("academic-theme");
-      const theme = stored === "light" || stored === "dark"
-        ? stored
-        : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    const storageKey = "academic-theme";
+
+    const updateToggle = (theme) => {
+      const button = document.querySelector("[data-theme-toggle]");
+      if (!button) return;
+      const nextTheme = theme === "dark" ? "light" : "dark";
+      button.setAttribute("aria-label", "Switch to " + nextTheme + " mode");
+      button.setAttribute("title", "Switch to " + nextTheme + " mode");
+      const icon = button.querySelector("[data-theme-toggle-icon]");
+      const label = button.querySelector("[data-theme-toggle-label]");
+      if (icon) icon.textContent = theme === "dark" ? "☾" : "☀";
+      if (label) label.textContent = theme === "dark" ? "Dark" : "Light";
+    };
+
+    const applyTheme = (theme) => {
       document.documentElement.dataset.theme = theme;
       document.documentElement.style.colorScheme = theme;
+      updateToggle(theme);
+    };
+
+    let stored = null;
+    try {
+      stored = localStorage.getItem(storageKey);
     } catch {}
+
+    const initialTheme = stored === "light" || stored === "dark"
+      ? stored
+      : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    applyTheme(initialTheme);
+
+    document.addEventListener("DOMContentLoaded", () => updateToggle(initialTheme));
+    document.addEventListener("click", (event) => {
+      if (!(event.target instanceof Element)) return;
+      const button = event.target.closest("[data-theme-toggle]");
+      if (!button) return;
+
+      const currentTheme = document.documentElement.dataset.theme === "dark"
+        ? "dark"
+        : "light";
+      const nextTheme = currentTheme === "dark" ? "light" : "dark";
+      try {
+        localStorage.setItem(storageKey, nextTheme);
+      } catch {}
+      applyTheme(nextTheme);
+    });
   })();
 `;
 
