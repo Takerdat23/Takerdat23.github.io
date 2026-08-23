@@ -1,4 +1,4 @@
-import { copyFile, mkdir } from "node:fs/promises";
+import { access, copyFile, cp, mkdir } from "node:fs/promises";
 
 const outputDirectory = new URL("../dist/client/", import.meta.url);
 const routes = ["fun", "privacy"];
@@ -13,3 +13,23 @@ await Promise.all(
     );
   }),
 );
+
+const configuredBasePath = (process.env.NEXT_PUBLIC_BASE_PATH ?? "")
+  .replace(/^\//, "")
+  .replace(/\/$/, "");
+
+if (configuredBasePath) {
+  const prefixedAssets = new URL(
+    `${configuredBasePath}/_next/`,
+    outputDirectory,
+  );
+  const deployedAssets = new URL("_next/", outputDirectory);
+
+  try {
+    await access(prefixedAssets);
+    await cp(prefixedAssets, deployedAssets, { recursive: true });
+  } catch (error) {
+    if (error?.code !== "ENOENT") throw error;
+    await access(deployedAssets);
+  }
+}

@@ -144,5 +144,17 @@ test("exports every public route and all final imagery for GitHub Pages", async 
       new RegExp(`${deploymentBasePath}${deploymentBasePath}/og\\.png`),
     );
     assert.doesNotMatch(homeHtml, /href="\/_next\//);
+
+    const generatedAssetPaths = [
+      ...homeHtml.matchAll(/(?:href|src)="([^"]*\/_next\/[^"]+)"/g),
+    ].map((match) => match[1]);
+    assert.ok(generatedAssetPaths.length > 0);
+
+    await Promise.all(
+      generatedAssetPaths.map((assetPath) => {
+        const artifactPath = assetPath.slice(deploymentBasePath.length + 1);
+        return access(new URL(`dist/client/${artifactPath}`, root));
+      }),
+    );
   }
 });
