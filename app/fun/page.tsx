@@ -3,6 +3,7 @@
 // The original cinematic portfolio is intentionally preserved as the fun edition.
 
 import { useEffect, useRef } from "react";
+import { sitePath } from "../site-path";
 
 type Spark = {
   x: number;
@@ -174,7 +175,7 @@ const projects = [
     description:
       "A system for evidence-grounded reasoning across geospatial tools, Earth data, and scientific questions.",
     tags: ["Agents", "EO", "Multimodal"],
-    image: "/scene-green-pixel.jpg",
+    image: sitePath("/scene-green-pixel.jpg"),
     tone: "green",
   },
   {
@@ -184,7 +185,7 @@ const projects = [
     description:
       "Structure-aware ingestion, hybrid retrieval, and exact-span validation for scientific evidence you can trace.",
     tags: ["RAG", "Evidence", "Climate"],
-    image: "/scene-red-pixel.jpg",
+    image: sitePath("/scene-red-pixel.jpg"),
     tone: "red",
   },
   {
@@ -194,7 +195,7 @@ const projects = [
     description:
       "A research workflow for extracting road networks from overhead imagery and evaluating their topology.",
     tags: ["Vision", "Graphs", "Remote sensing"],
-    image: "/scene-green-pixel.jpg",
+    image: sitePath("/scene-green-pixel.jpg"),
     tone: "amber",
   },
 ];
@@ -261,10 +262,10 @@ export default function Home() {
 
       <div className="space-backdrop" aria-hidden="true">
         <div className="space-scene space-scene--green">
-          <img src="/scene-green-pixel-4k.png" alt="" />
+          <img src={sitePath("/scene-green-pixel-4k.png")} alt="" />
         </div>
         <div className="space-scene space-scene--red">
-          <img src="/scene-red-pixel-4k.png" alt="" />
+          <img src={sitePath("/scene-red-pixel-4k.png")} alt="" />
         </div>
         <div className="space-vignette" />
         <div className="space-grid" />
@@ -294,7 +295,10 @@ export default function Home() {
       <section id="profile" className="hero shell">
         <aside className="identity-card pixel-panel reveal is-visible">
           <div className="portrait-window">
-            <img src="/scene-green-pixel.jpg" alt="Pixel-art astronaut above a spacecraft" />
+            <img
+              src={sitePath("/scene-green-pixel.jpg")}
+              alt="Pixel-art astronaut above a spacecraft"
+            />
             <span className="portrait-status">● ONLINE</span>
           </div>
           <div className="identity-copy">

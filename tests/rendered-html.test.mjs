@@ -17,7 +17,7 @@ test("defines the academic portfolio with the complete verified publication list
   assert.match(layout, /NEXT_PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN/);
   assert.match(layout, /static\.cloudflareinsights\.com\/beacon\.min\.js/);
   assert.match(layout, /data-cf-beacon/);
-  assert.match(layout, /images: \["\/og\.png"\]/);
+  assert.match(layout, /images: \[sitePath\("\/og\.png"\)\]/);
   assert.match(layout, /\/goat-head-favicon-v2\.ico/);
   assert.match(layout, /\/goat-head-favicon-v2-16\.png/);
   assert.match(layout, /\/goat-head-favicon-v2-32\.png/);
@@ -59,7 +59,7 @@ test("defines the academic portfolio with the complete verified publication list
   assert.match(page, /Joined MBZUAI as a research engineer/);
   assert.match(page, /Representative figure from this publication/);
   assert.doesNotMatch(page, /href="\/fun"/);
-  assert.match(page, /href="\/privacy"/);
+  assert.match(page, /sitePath\("\/privacy"\)/);
   assert.doesNotMatch(page, /recordPageView/);
   assert.doesNotMatch(page, /Your site is taking shape|codex-preview/);
 });
@@ -89,9 +89,10 @@ test("publishes a clear Cloudflare analytics privacy boundary", async () => {
 });
 
 test("exports every public route and all final imagery for GitHub Pages", async () => {
-  const [hosting, nextConfig] = await Promise.all([
+  const [hosting, nextConfig, homeHtml] = await Promise.all([
     readFile(new URL(".openai/hosting.json", root), "utf8"),
     readFile(new URL("next.config.ts", root), "utf8"),
+    readFile(new URL("dist/client/index.html", root), "utf8"),
     access(new URL("dist/client/index.html", root)),
     access(new URL("dist/client/fun.html", root)),
     access(new URL("dist/client/privacy.html", root)),
@@ -121,5 +122,27 @@ test("exports every public route and all final imagery for GitHub Pages", async 
 
   assert.match(hosting, /"d1": null/);
   assert.match(nextConfig, /output: "export"/);
+  assert.match(nextConfig, /assetPrefix/);
   assert.match(nextConfig, /unoptimized: true/);
+  assert.doesNotMatch(homeHtml, /\/Users\/|\.vinext\/fonts/);
+
+  const deploymentBasePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+  if (deploymentBasePath) {
+    const deploymentOrigin = new URL(
+      process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+    ).origin;
+    assert.ok(homeHtml.includes(`href="${deploymentBasePath}/_next/`));
+    assert.ok(homeHtml.includes(`src="${deploymentBasePath}/logo_light.png"`));
+    assert.ok(homeHtml.includes(`href="${deploymentBasePath}/privacy"`));
+    assert.ok(
+      homeHtml.includes(
+        `content="${deploymentOrigin}${deploymentBasePath}/og.png"`,
+      ),
+    );
+    assert.doesNotMatch(
+      homeHtml,
+      new RegExp(`${deploymentBasePath}${deploymentBasePath}/og\\.png`),
+    );
+    assert.doesNotMatch(homeHtml, /href="\/_next\//);
+  }
 });

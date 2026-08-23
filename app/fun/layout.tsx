@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { sitePath } from "../site-path";
 
 const title = "Dat Nguyen — Fun Portfolio Edition";
 const description =
@@ -13,13 +14,13 @@ export const metadata: Metadata = {
     title,
     description,
     type: "website",
-    images: ["/og-research.png"],
+    images: [sitePath("/og-research.png")],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
-    images: ["/og-research.png"],
+    images: [sitePath("/og-research.png")],
   },
 };
 

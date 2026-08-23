@@ -17,13 +17,19 @@ unlinked fun edition remains available at <http://localhost:3000/fun>.
 
 ## 2. Create the GitHub Pages repository
 
-On GitHub, create a public repository named exactly:
+For the clean root URL, create a public repository using your actual GitHub
+username:
 
 ```text
 YOUR-GITHUB-USERNAME.github.io
 ```
 
-Do not initialize it with a README, `.gitignore`, or license.
+For example, the GitHub account `Takerdat23` should use
+`takerdat23.github.io`. A differently named repository also works, but GitHub
+publishes it below a repository path such as
+`https://takerdat23.github.io/datnguyen.github.io/`.
+
+Do not initialize a new repository with a README, `.gitignore`, or license.
 
 In the new repository, open **Settings → Pages**. Under **Build and deployment**,
 set **Source** to **GitHub Actions**.

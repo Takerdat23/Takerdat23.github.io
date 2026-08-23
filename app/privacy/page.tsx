@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { sitePath } from "../site-path";
 
 export const dynamic = "force-static";
 
@@ -22,9 +22,9 @@ export default function PrivacyPage() {
   return (
     <main className="academic-site policy-page">
       <div className="academic-shell policy-shell">
-        <Link className="policy-back" href="/">
+        <a className="policy-back" href={sitePath("/")}>
           ← Back to the portfolio
-        </Link>
+        </a>
         <p className="academic-kicker">Privacy</p>
         <h1>Simple, aggregate analytics.</h1>
         <p>

@@ -1,21 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { sitePath } from "./site-path";
 
 const title = "Dat Tien Nguyen — Earth Intelligence & AI Research";
 const description =
   "The academic portfolio of Dat Tien Nguyen, an MSc student at MBZUAI working across multimodal learning, NLP, video retrieval, and scientific AI.";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const siteOrigin = new URL(siteUrl).origin;
 const analyticsToken =
   process.env.NEXT_PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN;
 
@@ -33,19 +24,27 @@ const themeScript = `
 `;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(siteOrigin),
   title,
   description,
   icons: {
     icon: [
-      { url: "/goat-head-favicon-v2.ico", sizes: "32x32" },
-      { url: "/goat-head-favicon-v2-16.png", type: "image/png", sizes: "16x16" },
-      { url: "/goat-head-favicon-v2-32.png", type: "image/png", sizes: "32x32" },
+      { url: sitePath("/goat-head-favicon-v2.ico"), sizes: "32x32" },
+      {
+        url: sitePath("/goat-head-favicon-v2-16.png"),
+        type: "image/png",
+        sizes: "16x16",
+      },
+      {
+        url: sitePath("/goat-head-favicon-v2-32.png"),
+        type: "image/png",
+        sizes: "32x32",
+      },
     ],
-    shortcut: ["/goat-head-favicon-v2.ico"],
+    shortcut: [sitePath("/goat-head-favicon-v2.ico")],
     apple: [
       {
-        url: "/goat-head-apple-v2.png",
+        url: sitePath("/goat-head-apple-v2.png"),
         type: "image/png",
         sizes: "180x180",
       },
@@ -55,13 +54,13 @@ export const metadata: Metadata = {
     title,
     description,
     type: "website",
-    images: [{ url: "/og.png", width: 1730, height: 909 }],
+    images: [{ url: sitePath("/og.png"), width: 1730, height: 909 }],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
-    images: ["/og.png"],
+    images: [sitePath("/og.png")],
   },
 };
 
@@ -75,9 +74,7 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body>
         {children}
         {analyticsToken ? (
           <script

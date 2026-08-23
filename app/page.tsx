@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ThemeToggle from "./ThemeToggle";
+import { sitePath } from "./site-path";
 
 type Publication = {
   year: string;
@@ -22,7 +23,7 @@ const publications: Publication[] = [
       "Huy M. Le, Dat Tien Nguyen, Ngan T. T. Vo, Tuan D. Q. Nguyen, Nguyen Le Binh, Duy Minh Ho Nguyen, Daniel Sonntag, Lizi Liao, Binh T. Nguyen",
     summary:
       "MULTIMOOD combines video, audio, text, and dialogue history to recognize emotional-support needs and generate responses aligned with professional therapeutic criteria.",
-    image: "/papers/multimood-conversation.png",
+    image: sitePath("/papers/multimood-conversation.png"),
     imageAlt:
       "MULTIMOOD paper figure comparing a prior system response with an empathetic multimodal response",
     paper: "https://ojs.aaai.org/index.php/AAAI/article/view/40412",
@@ -39,7 +40,7 @@ const publications: Publication[] = [
       "Dat Tien Nguyen, Thao Nguyen, Fadillah Adamsyah Maani, Huy M. Le, Muhammad Umer Sheikh, Numan Saeed, Muhammad Haris Khan, Salman Khan",
     summary:
       "A benchmark and executable agent framework for grounded reasoning across Earth observation, gridded environmental data, GIS, simulation, and scientific documents.",
-    image: "/papers/terrabench-overview.png",
+    image: sitePath("/papers/terrabench-overview.png"),
     imageAlt:
       "TerraBench overview figure showing Earth-science use cases and reasoning levels",
     paper: "https://arxiv.org/abs/2606.13148",
@@ -56,7 +57,7 @@ const publications: Publication[] = [
       "Huy M. Le, Dat Tien Nguyen, Phuc Binh Nguyen, Gia-Bao Le-Tran, Phu Truong Thien, Cuong Dinh, Minh Nguyen, Nga Nguyen, Thuy T. N. Nguyen, Huy Gia Ngo, Tan Nhat Nguyen, Binh T. Nguyen",
     summary:
       "A faster, more accessible video-retrieval system with optimized keyframe extraction, multilingual OCR and ASR, lightweight visual question answering, and interactive reranking.",
-    image: "/papers/fusionista2-overview.png",
+    image: sitePath("/papers/fusionista2-overview.png"),
     imageAlt:
       "Fusionista2.0 paper figure showing its indexing and interactive search architecture",
     paper: "https://doi.org/10.1007/978-981-95-6957-1_25",
@@ -73,7 +74,7 @@ const publications: Publication[] = [
     authors: "Nghia Hieu Nguyen, Dat Tien Nguyen, Ngan Luu-Thuy Nguyen",
     summary:
       "A linguistic and empirical re-examination of Vietnamese word segmentation, with ViWordFormer modeling phrasal lexemes directly from Vietnamese text.",
-    image: "/papers/viwordformer-attention.png",
+    image: sitePath("/papers/viwordformer-attention.png"),
     imageAlt:
       "ViWordFormer paper figure showing attention-score maps across six model layers",
     paper: "https://ojs.aaai.org/index.php/AAAI/article/view/34581",
@@ -90,7 +91,7 @@ const publications: Publication[] = [
       "Son Quang Tran, Minh Cong Bui, Dat Tien Nguyen, Thun Itthipanichpong, Danaithep Limskul, Napatpong Thamrongskulsiri, Thanathep Tanpowpong",
     summary:
       "An evaluation of six deep-learning models for grading visual clarity in shoulder arthroscopy, supporting more consistent assessment of bleeding-related image quality.",
-    image: "/papers/shoulder-clarity-grades.jpg",
+    image: sitePath("/papers/shoulder-clarity-grades.jpg"),
     imageAlt:
       "Paper figure showing three grades of shoulder arthroscopic visual clarity relative to bleeding",
     paper: "https://pmc.ncbi.nlm.nih.gov/articles/PMC12144979/",
@@ -108,7 +109,7 @@ export default function Home() {
           <span className="academic-logo" aria-hidden="true">
             <Image
               className="academic-logo-light"
-              src="/logo_light.png"
+              src={sitePath("/logo_light.png")}
               alt=""
               width={1254}
               height={1254}
@@ -116,7 +117,7 @@ export default function Home() {
             />
             <Image
               className="academic-logo-dark"
-              src="/logo_dark.png"
+              src={sitePath("/logo_dark.png")}
               alt=""
               width={1254}
               height={1254}
@@ -140,7 +141,7 @@ export default function Home() {
         <section id="about" className="academic-intro" aria-labelledby="intro-title">
           <div className="academic-portrait">
             <Image
-              src="/profile-dat-tien-nguyen.jpg"
+              src={sitePath("/profile-dat-tien-nguyen.jpg")}
               alt="Dat Tien Nguyen"
               width={996}
               height={974}
@@ -295,7 +296,7 @@ export default function Home() {
 
         <footer className="academic-footer">
           <p>© 2026 Dat Tien Nguyen</p>
-          <p><a href="/privacy">Privacy</a></p>
+          <p><a href={sitePath("/privacy")}>Privacy</a></p>
         </footer>
       </div>
     </main>
