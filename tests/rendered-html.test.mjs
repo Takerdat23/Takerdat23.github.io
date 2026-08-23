@@ -54,10 +54,22 @@ test("defines the academic portfolio with the complete verified publication list
   assert.match(page, /https:\/\/mbzuai\.ac\.ae\/study\/faculty\/salman-khan\//);
   assert.match(page, /href="#future-direction"/);
   assert.match(page, /Future direction/);
-  assert.match(page, /reliable, long-horizon AI agents/);
+  assert.match(page, /long-horizon AI agents/);
   assert.match(page, /reason over structured trajectories/);
   assert.match(page, /For 2027, I am open to research/);
-  assert.match(page, /internships and collaborations in agentic AI/);
+  assert.match(page, /internships/);
+  assert.match(page, /agentic AI/);
+  for (const keyword of [
+    "long-horizon AI agents",
+    "post-training",
+    "reinforcement learning",
+    "internships",
+    "agentic AI",
+    "AI for science",
+  ]) {
+    assert.match(page, new RegExp(`<strong className="research-keyword">${keyword}<\\/strong>`));
+  }
+  assert.match(styles, /\.research-keyword/);
   assert.match(page, /Joined MBZUAI as an MSc student/);
   assert.match(page, /Joined MBZUAI as a research engineer/);
   assert.match(page, /Representative figure from this publication/);

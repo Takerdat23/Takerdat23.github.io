@@ -1334,6 +1334,16 @@ html[data-theme="dark"] .academic-logo-dark {
   line-height: 1.68;
 }
 
+.research-keyword {
+  padding: 0.05em 0.2em;
+  border-radius: 0.14em;
+  color: var(--academic-accent-strong);
+  background: color-mix(in srgb, var(--academic-accent) 13%, transparent);
+  font-weight: 700;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
 .academic-links,
 .publication-links {
   display: flex;

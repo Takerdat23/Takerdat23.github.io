@@ -193,15 +193,21 @@ export default function Home() {
           </div>
           <div className="future-direction-copy">
             <p>
-              I am currently interested in developing reliable, long-horizon AI agents that
-              can reason over structured trajectories, use external tools, detect and recover
-              from failures, and keep their decisions grounded in verifiable evidence. In
-              particular, I am exploring process-level representations, post-training, and
-              reinforcement learning methods for improving agent planning, replanning, memory,
-              and recovery across scientific workflows. For 2027, I am open to research
-              internships and collaborations in agentic AI, reasoning and post-training,
-              reinforcement learning, multimodal and scientific agents, trustworthy AI, and AI
-              for science.
+              I am currently interested in developing reliable,{" "}
+              <strong className="research-keyword">long-horizon AI agents</strong> that can
+              reason over structured trajectories, use external tools, detect and recover from
+              failures, and keep their decisions grounded in verifiable evidence. In particular,
+              I am exploring process-level representations,{" "}
+              <strong className="research-keyword">post-training</strong>, and{" "}
+              <strong className="research-keyword">reinforcement learning</strong> methods for
+              improving agent planning, replanning, memory, and recovery across scientific
+              workflows. For 2027, I am open to research{" "}
+              <strong className="research-keyword">internships</strong> and collaborations in{" "}
+              <strong className="research-keyword">agentic AI</strong>, reasoning and{" "}
+              <strong className="research-keyword">post-training</strong>,{" "}
+              <strong className="research-keyword">reinforcement learning</strong>, multimodal
+              and scientific agents, trustworthy AI, and{" "}
+              <strong className="research-keyword">AI for science</strong>.
             </p>
           </div>
         </section>
