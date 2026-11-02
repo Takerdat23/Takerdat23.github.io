@@ -26,7 +26,7 @@ export default function PrivacyPage() {
           ← Back to the portfolio
         </a>
         <p className="academic-kicker">Privacy</p>
-        <h1>Simple, aggregate analytics.</h1>
+        <h1>Visitor analytics.</h1>
         <p>
           This site uses Cloudflare Web Analytics to understand aggregate page views,
           page paths, broad geographic reach, referring sites, device and browser types,
@@ -39,6 +39,17 @@ export default function PrivacyPage() {
           account. You can read more in Cloudflare&apos;s{" "}
           <a href="https://developers.cloudflare.com/web-analytics/about/">
             Web Analytics documentation
+          </a>
+          .
+        </p>
+        <p>
+          This site also uses Umami Cloud to understand page views, referring sites,
+          browser and device types, and approximate location. Umami&apos;s tracker does
+          not use cookies. Umami processes IP addresses to create anonymous session
+          identifiers and estimate location, but does not store them in standard
+          analytics records. You can read more in Umami&apos;s{" "}
+          <a href="https://docs.umami.is/docs/metric-definitions">
+            metric definitions
           </a>
           .
         </p>

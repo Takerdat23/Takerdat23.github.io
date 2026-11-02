@@ -93,14 +93,28 @@ test("keeps the original cinematic portfolio at the fun route", async () => {
   assert.match(page, /GREEN SIGNAL → RED SHIFT/);
 });
 
-test("publishes a clear Cloudflare analytics privacy boundary", async () => {
+test("publishes a clear analytics privacy boundary", async () => {
   const html = await readFile(new URL("dist/client/privacy.html", root), "utf8");
 
-  assert.match(html, /Simple, aggregate analytics/);
+  assert.match(html, /Visitor analytics/);
   assert.match(html, /Cloudflare Web Analytics/);
   assert.match(html, /does not collect or use visitors/);
+  assert.match(html, /Umami Cloud/);
+  assert.match(html, /does not use cookies/);
   assert.doesNotMatch(html, /property="og:image"/);
   assert.doesNotMatch(html, /name="twitter:image"/);
+});
+
+test("includes the Umami tracker in every published page head", async () => {
+  for (const page of ["index.html", "fun.html", "privacy.html"]) {
+    const html = await readFile(new URL(`dist/client/${page}`, root), "utf8");
+    const head = html.split("</head>", 1)[0];
+    const scripts = [...head.matchAll(/<script[^>]+src="https:\/\/cloud\.umami\.is\/script\.js"[^>]*><\/script>/g)];
+
+    assert.equal(scripts.length, 1, `${page} should include Umami exactly once`);
+    assert.match(scripts[0][0], /\bdefer\b/);
+    assert.match(scripts[0][0], /data-website-id="8c89a7b4-9b5f-42e8-8164-de7214f971c5"/);
+  }
 });
 
 test("exports a hydration-independent light and dark mode control", async () => {
